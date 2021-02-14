@@ -4,11 +4,13 @@ import urllib.request
 import tkinter
 import tkinter.messagebox
 import startEnd
+import time
 
 endroot = startEnd.end
 # instanciation de tkinter
 top = tkinter.Tk()
 widget = tkinter.Listbox(top, width=100, height=100)
+
 widgetTitre = tkinter.messagebox.Message(top)
 menubar = tkinter.Menu(top)
 top.config(menu=menubar) 
@@ -29,6 +31,7 @@ HistoriqueTitle = []
 
 # fonction principal qui créer la fenetre tkinter avec tout le jeu, instancian toutes les autres fonctions
 def viewData(root, currentroot,  endroot):
+    
     # rafraichissement de la fenetre tkinter à chaque création
     menubar.delete(0, 'end')
     menuHistorique.delete(0,'end')
@@ -54,7 +57,7 @@ def viewData(root, currentroot,  endroot):
     if (HistoriqueTitle):
         menubar.add_cascade(label="Historique : "+ HistoriqueTitle[len(HistoriqueTitle)-2], menu=menuHistorique)
         for y in range(len(HistoriqueTitle)):
-            menuHistorique.add_command(label= str(y+1) + " " + HistoriqueTitle[y]) 
+            menuHistorique.add_command(label= "Page n° " +  str(y+1) + " " + HistoriqueTitle[y]) 
     top.geometry("1000x500")
     widget.pack() 
     top.mainloop()
@@ -102,6 +105,15 @@ def back(cs):
     HistoriqueAncor.append(ancorlist[cs[0]])
     HistoriqueTitle.append(titlelist[cs[0]])
 
+def restart():
+    root = createNav(startEnd.url)
+    endroot = createNav(startEnd.url)
+    HistoriqueTitle.clear()
+    HistoriqueAncor.clear()
+    viewData( root, root, endroot )
+
+reboot = tkinter.Button(top, text="Restart", command=restart)
+reboot.pack()
 
 # fonction au double click  d'un titre de page va charger la nouvelle page avec toutes les nouvelles données à jour
 def go(event): 
@@ -112,3 +124,5 @@ def go(event):
     back(cs)
     refresh(top,   startEnd.start, currentroot, endroot)
     win(top, currentroot, endroot)
+
+
